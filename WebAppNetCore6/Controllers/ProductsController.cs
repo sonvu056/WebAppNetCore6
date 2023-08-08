@@ -49,5 +49,50 @@ namespace WebAppNetCore6.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBook(int id, BookModel model)
+        {
+            try
+            {
+                var book = await _bookRepo.GetBookAsync(id);
+                if (id != model.Id || book == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _bookRepo.UpdateBookAsync(id, model);
+                    return Ok();
+                }
+            }
+            catch 
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            try
+            {
+                var book = await _bookRepo.GetBookAsync(id);
+                if (book == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    await _bookRepo.DeleteBookAsync(id);
+                    return Ok();
+                }
+            }
+            catch 
+            {
+                return BadRequest();
+            }
+            
+        }
     }
 }
